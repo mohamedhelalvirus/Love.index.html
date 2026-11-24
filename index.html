@@ -1,0 +1,461 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#160609">
+<title>❤️</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Cairo:wght@400;600;700;800&display=swap');
+
+:root {
+  --bg: #100509;
+  --red: #e83c59;
+  --pink: #ff8299;
+  --gold: #ffc9a5;
+  --white: #fff1ed;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 45%, #4a101e 0%, #250912 45%, #100509 100%);
+  color: var(--white);
+  font-family: 'Alexandria', sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .18;
+  background-image: radial-gradient(#ffb7a0 .7px, transparent .7px);
+  background-size: 34px 34px;
+}
+
+.glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: #d61e4925;
+  filter: blur(100px);
+  pointer-events: none;
+  top: 30%;
+  left: calc(50% - 150px);
+  animation: glow 5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { transform: scale(.8); opacity: .5; }
+  to { transform: scale(1.4); opacity: 1; }
+}
+
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(.96) translateY(12px);
+  transition: opacity .8s ease, transform .8s ease, visibility .8s;
+  z-index: 2;
+}
+
+.screen.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1) translateY(0);
+}
+
+.stage {
+  position: relative;
+  width: min(90vw, 410px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  animation: stageFloat 4s ease-in-out infinite;
+}
+
+@keyframes stageFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.heart-label {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(15px, 4vw, 20px);
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 0 18px #ff4267;
+  pointer-events: none;
+}
+
+.question {
+  font-size: clamp(23px, 6vw, 32px);
+  font-weight: 700;
+  text-align: center;
+  line-height: 2;
+  margin: 0 0 35px;
+  text-shadow: 0 0 25px #f34b6b55;
+}
+
+.action {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #ffb0b966;
+  padding: 15px 55px;
+  border-radius: 50px;
+  color: white;
+  font-family: 'Cairo', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #a81737, #e94a65);
+  box-shadow:
+    0 0 30px #e83c5933,
+    inset 0 1px 1px #ffffff55;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.action:active {
+  transform: scale(.94);
+}
+
+.action:hover {
+  box-shadow: 0 0 45px #ff526a77;
+  transform: translateY(-3px);
+}
+
+.hint {
+  font-size: 16px;
+  color: #e9b9b9;
+  margin-bottom: 5px;
+}
+
+.counter-screen {
+  overflow-y: auto;
+  justify-content: center;
+  scrollbar-width: none;
+}
+
+.counter-screen::-webkit-scrollbar {
+  display: none;
+}
+
+.counter-title {
+  font-size: 23px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.counter {
+  direction: ltr;
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(36px, 10vw, 65px);
+  font-weight: 800;
+  text-align: center;
+  color: #ffd5c7;
+  text-shadow: 0 0 25px #ff4766aa;
+  max-width: 95vw;
+  overflow-wrap: anywhere;
+  transition: .1s;
+}
+
+.counter-line {
+  width: 90px;
+  height: 2px;
+  margin: 24px auto;
+  background: linear-gradient(90deg, transparent, #ff9a9a, transparent);
+  box-shadow: 0 0 12px #ff9a9a;
+}
+
+.love-message {
+  width: min(90%, 430px);
+  max-height: 34vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  margin: 10px auto 0;
+  padding: 22px;
+  border: 1px solid rgba(255,190,170,.2);
+  border-radius: 22px;
+  background: rgba(255,255,255,.055);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  color: #ffe5df;
+  font-family: 'Alexandria', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 2.3;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(25px);
+  filter: blur(8px);
+  transition: opacity 1.5s ease,
+              transform 1.5s ease,
+              filter 1.5s ease;
+}
+
+.love-message::-webkit-scrollbar {
+  display: none;
+}
+
+.love-message.show {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+@media(max-height: 650px) {
+  .stage {
+    width: min(70vw, 300px);
+  }
+
+  .love-message {
+    max-height: 27vh;
+    padding: 14px;
+    font-size: 12px;
+  }
+
+  .counter-title {
+    margin-bottom: 10px;
+  }
+
+  .counter-line {
+    margin: 12px auto;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="glow"></div>
+
+<!-- البداية -->
+<section class="screen active" id="one">
+  <div class="stage" onclick="go('two')">
+    <canvas id="heart1"></canvas>
+    <div class="heart-label">ابدئي يا بنوتتي</div>
+  </div>
+</section>
+
+<!-- السؤال -->
+<section class="screen" id="two">
+  <h1 class="question">عايزه تعرفي وحشتيني قد اي</h1>
+  <button class="action" onclick="go('three')">
+    ثح ثح
+  </button>
+</section>
+
+<!-- القلب الثاني -->
+<section class="screen" id="three">
+  <p class="hint">اضغطي على القلب</p>
+  <div class="stage" onclick="startCounter()">
+    <canvas id="heart2"></canvas>
+  </div>
+</section>
+
+<!-- العداد والرسالة -->
+<section class="screen counter-screen" id="four">
+  <div class="counter-title">وحشتيني قد اي</div>
+
+  <div class="counter" id="counter">0</div>
+
+  <div class="counter-line"></div>
+
+  <div class="love-message" id="finalText">
+    نتي مفكره العداد هيوقف عد ولا اي دا هيفضل يعد لحد م الرياضه تخلص بحبك وحشتيني قوي قوي والله ي بنوتتي وادي لعبه جميله لثغنونتي ومتزعليش من السخونيه حقك عليا ي عيوني ربنا يخليكي ليا لما دخلت عندك ف الاكونت شوفت كل حاجه ربنا يخليكي ليا ي ثغنونتي دايما معايا حتى لو مش موجوده معايا
+  </div>
+</section>
+
+<script>
+
+// التنقل بين الشاشات
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+  });
+
+  document.getElementById(id).classList.add('active');
+}
+
+// تكوين القلب من ذرات التراب
+function createHeart(canvas) {
+  const ctx = canvas.getContext('2d');
+
+  let w, h;
+  let particles = [];
+  let start = performance.now();
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+
+    w = rect.width;
+    h = rect.height;
+
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    particles = [];
+
+    const count = 650;
+
+    for (let i = 0; i < count; i++) {
+      const t = Math.random() * Math.PI * 2;
+
+      const x = 16 * Math.pow(Math.sin(t), 3);
+      const y = -(13 * Math.cos(t)
+        - 5 * Math.cos(2*t)
+        - 2 * Math.cos(3*t)
+        - Math.cos(4*t));
+
+      const scale = Math.sqrt(Math.random());
+
+      const tx = w/2 + x * scale * w/40;
+      const ty = h/2 + y * scale * h/40;
+
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        tx,
+        ty,
+        size: Math.random() * 1.8 + .5,
+        delay: Math.random() * 1200,
+        phase: Math.random() * 6.28,
+        speed: Math.random() * .5 + .5,
+        drift: Math.random() * 3
+      });
+    }
+
+    start = performance.now();
+  }
+
+  function draw(now) {
+    ctx.clearRect(0, 0, w, h);
+
+    const elapsed = now - start;
+
+    particles.forEach(p => {
+      const progress = Math.min(
+        1,
+        Math.max(0, (elapsed - p.delay) / 1700)
+      );
+
+      const ease = 1 - Math.pow(1 - progress, 3);
+
+      const shimmer =
+        .6 + Math.sin(now * .003 * p.speed + p.phase) * .4;
+
+      const x = p.x + (p.tx - p.x) * ease
+        + Math.sin(now * .001 + p.phase) * p.drift * progress;
+
+      const y = p.y + (p.ty - p.y) * ease
+        + Math.cos(now * .001 + p.phase) * p.drift * progress;
+
+      ctx.beginPath();
+      ctx.arc(
+        x,
+        y,
+        p.size * (.8 + shimmer * .4),
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fillStyle = Math.random() > .5
+        ? `rgba(255,190,157,${shimmer})`
+        : `rgba(255,65,100,${shimmer})`;
+
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = '#ff496c';
+      ctx.fill();
+    });
+
+    ctx.shadowBlur = 0;
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  requestAnimationFrame(draw);
+
+  window.addEventListener('resize', resize);
+}
+
+createHeart(document.getElementById('heart1'));
+createHeart(document.getElementById('heart2'));
+
+// العداد
+let started = false;
+let number = 0n;
+let lastUpdate = 0;
+let startTime = 0;
+
+function startCounter() {
+  if (started) return;
+
+  started = true;
+  go('four');
+
+  const counter = document.getElementById('counter');
+  const finalText = document.getElementById('finalText');
+
+  startTime = performance.now();
+
+  function animate(now) {
+    const elapsed = now - startTime;
+
+    // زيادة سريعة جدا مع الحفاظ على أداء الهاتف
+    if (now - lastUpdate >= 45) {
+      const speed = BigInt(
+        Math.floor(1000 + Math.min(elapsed * 5000, 1000000000000))
+      );
+
+      number += speed;
+
+      counter.textContent = number.toLocaleString('en-US');
+
+      lastUpdate = now;
+    }
+
+    // ظهور الرسالة بعد خمس ثواني
+    if (elapsed > 5000) {
+      finalText.classList.add('show');
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+}
+
+</script>
+
+</body>
+</html>
